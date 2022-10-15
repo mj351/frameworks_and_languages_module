@@ -1,3 +1,7 @@
-FROM alpine
-#first change 26/09/22
-#WORKDIR /app/
+FROM node 
+WORKDIR /app/
+Run npm install express
+COPY  app.js .
+CMD ["node", "app.js"]
+
+
