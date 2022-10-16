@@ -2,24 +2,29 @@ const express = require('express')
 const app = express()
 const port = 8000
 
+const itemList = [];
+
 app.get('/', (req, res) => {
-  res.send('<html><body> your HTML text</body></html>')
+  res.send('<html><body>Hello World! marwan</body></html>')
 })
 
-app.get('/thing', (req, res) => {
+app.get('/items', (req, res) => {
+    return res.send(itemList);
+  })
+
+app.get('/item/:id', (req, res) => {
     res.send('MJ')
   })
 
-app.post('/attendee', (req, res) => {
+app.post('/item', (req, res) => {
     res.send('I Got a POST request')
   })
+ 
 
-app.put('/user', (req, res) => {
-    res.send('Got a PUT request at /user')
-  })  
-
-app.delete('/user', (req, res) => {
+app.delete('/item/:id', (req, res) => {
     res.send('Got a DELETE request at /user')
+   const itemList = this.itemList.filter(item => item.id !== id);
+   return itemList;
   })
 
 app.listen(port, () => {
