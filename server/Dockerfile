@@ -1,5 +1,5 @@
 FROM node
-WORKDIR /app/
+WORKDIR /server/
 Run npm install express
 COPY  app.js .
 CMD ["node", "app.js"]
