@@ -1,19 +1,13 @@
-const Joi = require ('express') //(joi)//for data validation 
+const Joi = require ('joi') //(joi)//for data validation 
 const { object } = require('joi')
 const express = require('express')
 const app = express()
 const port = 8000
-
-//init Express
+// const cors = require('cors')
+// app.use(cors())
+// //init Express
 
 app.use(express.json()); //Enable json 
-
-//const cors = req ('cors')
-//app.use(cors())
-// class items{
-//   id;
-
-// }
 
 Items = []
 
@@ -31,10 +25,16 @@ app.get('/item/:id', (req, res) => {
   if (!item) return res.status(404).send('The item with the given ID was not found')
   res.send(item)
 })
+
  //good
  //fix assert 201==    405
 app.post('/item', (req, res) => {
-  
+  // const {error} = validateItem(req.body) 
+  // if (error){
+  //   res.status(405).send(error.details[0].message)
+  //   return
+  // }
+
   const test = {
     id:Items.length + 1,
     user_id:req.body.user_id,
@@ -44,49 +44,44 @@ app.post('/item', (req, res) => {
     lat:req.body.lat,
     date_from:"2022-10-01",
   }
+  if( isNaN(test.lon)){
+    res.status(405).send(test)
+  }
 
-  //if(isNaN(req.body.lon)){
-    //res.status(405)
- // } else {
-    
-   Items.push(test)
-    res.status(201).json(test)
-  
+  Items.push(test)
+  res.status(201).send(test)
+
 })
 
-// app.post('/item', (req, res) => {
-//   const schema = {
-//     name: Joi.string().min(3).require()
-//   }
+app.put('/items/:id', (req, res) => {
+  const item = Items.find(c => c.id === parseFloat(req.params.id)) //look up at items
+  if (!item) return res.status(404).send('The item with the given ID was not found') //if not existing, return 404
 
-//   const result = Joi.validate(req.body, schema)
-//   if (error) {return res.status(400).send(result.error.details[0].message) //400 bad Request
-//   }
+  const {error} = validateItem(req.body)
+  if (error){
+    res.status(400).send(error.details[0].message)
+    return
+  }
 
-//   const item = {
-//     id: Items.length + 1,
-//     name:req.body.name
-//   }
-//   Items.push(item)
-//   res.send(item)
-//     //console.log(req.body)
-//     //Item.push(req.body)
-//     //res.send(201)
-// })
+  item.keywords = req.body.item  //update item
+  res.send(item); //return the updated item
+  })
   
+//validate 
+function validateItem(item) {
+  const schema = {
+    keywords: joi.string().main(5).require()
+  }
+  return joi.validate(item, schema)
+}
+
 app.delete('/item/:id', (req, res) => {
-  //const item = Items.filter(c => c.id !== parseFloat(req.params.id))
-  //if (!item) return res.status(404).send('The item with the given ID was not found')
-   res.send('Got a DELETE request at /user')
-   Items = Items.filter(item => item.id !== id);
-   res.status(204)
-   return item;
+  const item = Items.find(c => c.id === parseFloat(req.params.id)) //look up at items
+  if (!item) return res.status(404).send('The item with the given ID was not found') //if not existing, return 404
 
-   //Delete
-   const index = Items.indexOf(item)
-   Items.splice(index, 1);
-
-   res.send(item)
+  const index = Items.indexOf(item)
+  Items.splice(index, 1)
+  res.status(204).send(item)
 
 })
 
