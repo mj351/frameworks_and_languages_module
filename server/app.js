@@ -3,8 +3,12 @@ const { object } = require('joi')
 const express = require('express')
 const app = express()
 const port = 8000
-// const cors = require('cors')
-// app.use(cors())
+const cors = require('cors')
+
+app.use(cors({
+  origin: "*",
+}))
+
 // //init Express
 
 app.use(express.json()); //Enable json 
@@ -52,20 +56,6 @@ app.post('/item', (req, res) => {
   res.status(201).send(test)
 
 })
-
-app.put('/items/:id', (req, res) => {
-  const item = Items.find(c => c.id === parseFloat(req.params.id)) //look up at items
-  if (!item) return res.status(404).send('The item with the given ID was not found') //if not existing, return 404
-
-  const {error} = validateItem(req.body)
-  if (error){
-    res.status(400).send(error.details[0].message)
-    return
-  }
-
-  item.keywords = req.body.item  //update item
-  res.send(item); //return the updated item
-  })
   
 //validate 
 function validateItem(item) {
