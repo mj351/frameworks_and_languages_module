@@ -1,7 +1,11 @@
 FROM node
 WORKDIR /server/
-RUN npm install express
-COPY  app.js .
-CMD ["node", "app.js"]
+
+COPY package.json ./
+
+RUN npm install
+COPY . .
+
+CMD ["node", "app.js",]
 
 

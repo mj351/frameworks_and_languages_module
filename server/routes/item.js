@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require ('mongoose')
 
-const Item = require ('..//itemModels')
+//const mongoose = require ('mongoose')
+
+const ITEMS = require ('../itemsModels')
 
 //const { restart } = require('nodemon')
 //const cors = require('cors')
@@ -10,7 +11,7 @@ const Item = require ('..//itemModels')
 
 // Handle incoming GET requests to /item 
 router.get("/", (req, res, next) => {
-  Item.find()
+  ITEMS.find()
   .exec()
   .then(docs =>{
     console.log(docs);
@@ -32,65 +33,51 @@ router.get("/", (req, res, next) => {
 
 // POST
 router.post("/", (req, res, next) => {
-  const item = new Item({
-    _id: new mongoose.Types.ObjectId(),
-    userId: string,
-    keywords:[],
-    description: string,
-    image: string,
-    lat: number,
-    lon: number,
-    date_from: string
-  });
-  item
-  .save()
-  .then(result => {
-    console.log(result);
-    res.status(201).json({
-      message: "handling POST requests to item"
-    });
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(405).json({
-      error: err
-    });
+  const ITEMS = {
+    id: newId,
+    user_id: req.body.user_id,
+    keywords: req.body.keywords,
+    description: req.body.description,
+    image: req.body.image,
+    lat: req.body.lat,
+    lon: req.body.lon,
+    date_from: new Date,
+    date_to: new Date
+  };
+  res.status(201).json({
+    message: 'Handling POST requests to item'
   });
 });
-
+  
 // GET
 router.get("/:itemId", (req, res, next) => {
-  const id = re.params.item;
-  Item.findById(id)
-  .exec()
-  .then(doc => {
-    console.log("From database", doc);
-    if (doc) {
-      res.
-      status(200).json(doc);
-    } else {
-      res.status(404).json({message: "No valid entry found for provided ID"})
-    }
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json({Error: err});
-  });
+  const id = re.params.itemId;
+  if (id === 'special') {
+    res.status(200).json({
+      message: 'You discovered the special ID',
+      id: id
+    });
+  } else {
+     res.status(200).json({
+      message: 'You passed an ID'
+     });
+  }
 });
 
 // DELETE 
 router.delete("/:itemId", (req, res, next) => {
   const id = req.params.itemId;
-  Item.remove({ _id: id })
+  ITEMS.remove({ _id: id })
   .exec()
   .then(result => {
-    res.status(200).json(result);
+    res.status(204).json(result);
   })
   .catch(err =>{
     console.log(err);
-    res.status(500).json({
+    res.status(404).json({
       error: err
     });
   });
 });
+
 module.exports = router
