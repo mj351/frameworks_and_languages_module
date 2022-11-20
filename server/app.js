@@ -35,7 +35,6 @@ app.post('/item', (req, res) => {
   ITEMS[newItem.id] = newItem;
   res.status(201).json(ITEMS)
 })
- 
 // GET
 /*app.get('item/:id', (req, res) => {
   const id = re.params.itemId;
