@@ -4,7 +4,7 @@ const port = 8000
 const ITEMS = require('./ITEMS');
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const { object, date } = require('joi');
+
 
 app.use(express.json());//Enable json
 app.use(bodyParser.json())
@@ -12,29 +12,36 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
 }));
 
+
 app.get('/', (req, res) => {
   res.send('<html><body>Hello world</body></html>')
 })
 
 // POST
 app.post('/item', (req, res) => {
-  const newItem = {
-    id:ITEMS.length + 1,
-    user_id:req.body.user_id,
-    keywords:req.body.keywords,
-    description:req.body.description,
-    lon:req.body.lon,
-    lat:req.body.lat,
-    date_from:"2022-10-01",
-    date_from: new Date,
-    date_to: new Date
+  const newItem = Object.keys(ITEMS).length +1
+  const newDate = new Date().toJSON().slice(0,10)
+  if(ITEMS.hasOwnProperty(newItem)){
+    newItem = newItem + 1
   }
-  if(!newItem.user_id || !newItem.keywords || !newItem.description || !newItem.lat || !newItem.lon){
-    return res.status(405).json({message: 'The item with the given ID was not found'})
+  if(req.body.user_id && req.body.keywords && req.body.description && req.body.lat && req.body.lon !==""){
+    ITEMS[newItem] = {
+      id:newItem,
+      user_id:req.body.user_id,
+      keywords:req.body.keywords,
+      description:req.body.description,
+      lon:req.body.lon,
+      lat:req.body.lat,
+      date_from: newDate,
+      date_to: newDate
+    }
+    res.status(201).json(ITEMS[newItem])
+  } 
+  else {
+    res.status(405).json('The item with the given ID was not found')
   }
-  ITEMS[newItem.id] = newItem;
-  res.status(201).json(ITEMS)
 })
+
 // GET
 /*app.get('item/:id', (req, res) => {
   const id = re.params.itemId;
