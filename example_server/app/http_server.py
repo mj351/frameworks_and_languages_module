@@ -75,6 +75,7 @@ RESPONSE_SEPARATOR = b'\r\n'
 def encode_response(response):
     r"""
     >>> encode_response({'body': '<html></html>'})
+    
     b'HTTP/1.0 200 OK\r\nContent-type: text/html; charset=utf-8\r\nServer: CustomHTTP/0.0 Python/3.9.0+\r\nAccess-Control-Allow-Origin: *\r\nContent-Length: 13\r\n\r\n<html></html>'
     """
     response = {**RESPONSE_DEFAULTS, **response}

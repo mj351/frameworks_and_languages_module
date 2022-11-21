@@ -102,6 +102,9 @@ Critique of Server/Client prototype
 
 (A code snippet example demonstrating the feature - 1 mark)
 (Explain why this pattern is problematic - 40ish words 1 mark)
+--- 
+def find_route_func(request, routes):
+---
 
 ### (name of Issue 2)
 
