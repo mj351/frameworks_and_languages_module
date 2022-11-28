@@ -19,8 +19,10 @@ app.get('/', (req, res) => {
 
 // POST
 app.post('/item', (req, res) => {
+
   const newItem = Object.keys(ITEMS).length +1
   const newDate = new Date().toJSON().slice(0,10)
+  
   if(ITEMS.hasOwnProperty(newItem)){
     newItem = newItem + 1
   }
@@ -65,10 +67,16 @@ app.get('/item/:id', (req, res) => {
 
 //Get Items 
 app.get('/items', (req, res) => {
-  const items = ITEMS.find(c => c.id === parseFloat(req.params.user_id))
-   if (!items) return res.status(404).send('The item with the given ID was not found')
-   res.send(items)
+  const id = req.params.user_id;
+  if (req.query.user_id) {
+    res.status(200).json(
+      Object.values(ITEMS).filter(u => u.user_id == req.query.user_id))
+   return
+    }
+    res.status(200).json(
+      Object.values(ITEMS))
 })
+
 // DELETE 
 
 app.delete('item/:id', (req, res) => {
