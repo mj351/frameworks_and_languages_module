@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,....==" />
+    <title>FreeCycle</title>
+    <style> 
+    /* styles here */
+    form {
+      padding: 10px;
+      border: 2px solid black;
+      border-radius: 5px;
+    }
+
+    input {
+      padding: 4px 8px;
+      margin: 4px;
+    }
+
+    span {
+      font-size: 18px;
+      margin: 4px;
+      font-weight: 500;
+    }
+    
+    .Submit {
+      font-size: 15px;
+      color: #fff;
+      background: #222;
+      padding: 6px 12px;
+      border: none;
+      margin-top: 8px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+  <h1>FreeCycle</h1>
+  <!-- html here -->
+
+  <div id="main">
+    <form @submit.prevent="create_item">
+      <span>Username</span><br>
+      <input
+      v-model = "item.user_id"
+      name="user_id"
+      type="text"
+      placeholder="user_id"
+      /><br>
+      <span>lat</span><br>
+      <input
+      v-model = "item.lat"
+      name="lat"
+      type="text"
+      placeholder="lat"
+      /><br>
+      <span>lon</span><br>
+      <input
+      v-model = "item.lon"
+      name="lon"
+      type="text"
+      placeholder="lon"
+      /><br>
+      <span>Image</span><br>
+      <input
+      v-model = "item.image"
+      name="image"
+      type="text"
+      placeholder="image"
+      /><br>
+      <span>Keywords</span><br>
+      <input
+      v-model = "item.keywords"
+      name="keywords"
+      type="text"
+      placeholder="keywords"
+      /><br>
+      <span>Description</span><br>
+      <textarea 
+      v-model = "description"
+      name="description"
+      placeholder="description"
+      ></textarea
+      /><br>
+      <button data-action="create_item" type="submit">Submit</button>
+    </form>
+  </div>
+
+<script type="module">
+// javascript here
+const { createApp } = Vue
+const DEFAULT_API = '/api/v1';  // default to current http(s)://currentHost:currentPort/api/v1'
+const urlParams = new URLSearchParams(window.location.search);
+const urlAPI = (urlParams.get('api') || DEFAULT_API).replace(/\/$/, '');  // Get api url (and remove trailing slash if present)
+
+createApp({
+  data() {
+    return {
+      urlAPI,
+      item: {
+        id:'',
+        user_id:'',
+        keywords:'',
+        description:'',
+        image:'',
+        lat:'',
+        lon:'',
+        date_from:'',
+        date_to:'',
+      },
+      items:[]
+    }
+  },
+  created(){
+    this.clearItem()
+    this.getItem()
+  },
+  methods:{
+    clearItem() {
+      this.item = {...this.item, ...{
+        user_id:'',
+        keywords:'',
+        description:'',
+        image:'',
+        lat:'',
+        lon:'',
+      }}
+    },
+    getItem(){
+      fetch(`${urlAPI}/items`, {
+        method: 'GET',
+      })
+      .then(response => response.json())
+      .then(json => {items = json  // save the json we got back into the variable `items`
+      })
+      .catch(err => console.error(err))
+    }
+  }
+}).mount('#main')
+
+</script>
+ 
+</body>
+</html>
