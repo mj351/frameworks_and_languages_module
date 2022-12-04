@@ -4,59 +4,59 @@
     <meta charset="utf-8" />
     <link id="favicon" rel="shortcut icon" type="image/png" href="data:image/png;base64,....==" />
     <title>FreeCycle</title>
+
     <style> 
-    /* styles here */
-    form {
-      padding: 10px;
-      border: 2px solid black;
-      border-radius: 5px;
-    }
-
-    input {
-      padding: 4px 8px;
-      margin: 4px;
-    }
-
-    span {
-      font-size: 18px;
-      margin: 4px;
-      font-weight: 500;
-    }
-    
-    .Submit {
-      font-size: 15px;
-      color: #fff;
-      background: #222;
-      padding: 6px 12px;
-      border: none;
-      margin-top: 8px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
+      /* styles here */
+      form {
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
+      }
+      input {
+        padding: 4px 8px;
+        margin: 4px;
+      }
+      span {
+        font-size: 18px;
+        margin: 4px;
+        font-weight: 500;
+      }
+      Submit {
+        font-size: 15px;
+        color: #fff;
+        background: #222;
+        padding: 6px 12px;
+        border: none;
+        margin-top: 8px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
     </style>
+
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-  <h1>FreeCycle</h1>
-  <!-- html here -->
+        <!-- html here -->
+  <h1>FreeCycle</h1> 
+  <div id="app">
 
-  <div id="main">
-    <form @submit.prevent="create_item">
-      <span>Username</span><br>
+    <h2>New Item</h2>
+    <form @submit.prevent="create_item" data:filed="user_id">
+      <span>UserName</span><br>
       <input
       v-model = "item.user_id"
       name="user_id"
       type="text"
       placeholder="user_id"
       /><br>
-      <span>lat</span><br>
+      <span>Latitude</span><br>
       <input
       v-model = "item.lat"
       name="lat"
       type="text"
       placeholder="lat"
       /><br>
-      <span>lon</span><br>
+      <span>Longitude</span><br>
       <input
       v-model = "item.lon"
       name="lon"
@@ -86,6 +86,20 @@
       /><br>
       <button data-action="create_item" type="submit">Submit</button>
     </form>
+
+    <h2>Items</h2>
+    <ul>
+       <li v-for="item in ITEMS">
+        <span data-field="id">{{item.id}}</span>
+        <span data-field="user_id">{{item.user_id}}</span>
+        <span data-field="lat">{{item.lat}}</span>
+        <span data-field="lon">{{item.lon}}</span>
+        <img src="item.image">
+        <span data-field="keywords">{{item.keywords}}</span>
+        <span data-field="description">{{description.lon}}</span>
+				<button data-action="delete" @click="deleteItem(item.id)">Delete</button>
+        </li>
+      </ul>
   </div>
 
 <script type="module">
@@ -110,15 +124,23 @@ createApp({
         date_from:'',
         date_to:'',
       },
-      items:[]
+      ITEMS:[]
     }
   },
   created(){
-    this.clearItem()
+    this.clearInput()
     this.getItem()
   },
   methods:{
-    clearItem() {
+    getItem(){
+      fetch(`${urlAPI}/ITEMS`, {
+        method: 'GET',
+      })
+      .then(response => response.json())
+      .then(json => this.ITEMS = json)// save the json we got back into the variable `ITEMS`
+      .catch(err => console.error(err))
+    },
+    clearInput(){
       this.item = {...this.item, ...{
         user_id:'',
         keywords:'',
@@ -128,17 +150,25 @@ createApp({
         lon:'',
       }}
     },
-    getItem(){
-      fetch(`${urlAPI}/items`, {
-        method: 'GET',
-      })
-      .then(response => response.json())
-      .then(json => {items = json  // save the json we got back into the variable `items`
-      })
-      .catch(err => console.error(err))
-    }
+    createItem(){
+      fetch(`${urlAPI}/item`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+        .then(json => console.log('createItems()', json))
+    .catch(err => console.error(err));
+  },
+  deleteItem(item_id) {
+    fetch(`${urlAPI}/item/${item_id}`, {
+        method: 'DELETE',
+    })
+    .then(json => console.log('deleteItem()', json))
+    .catch(err => console.error(err));
   }
-}).mount('#main')
+  }
+}).mount('#app')
 
 </script>
  

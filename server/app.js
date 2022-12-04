@@ -12,7 +12,6 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
 }));
 
-
 app.get('/', (req, res) => {
   res.send('<html><body>Hello world</body></html>')
 })
