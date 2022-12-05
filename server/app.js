@@ -5,19 +5,18 @@ const ITEMS = require('./items');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 
-
 app.use(express.json());//Enable json
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
 }));
 
-app.get('/', (req, res) => {
-  res.send('<html><body>Hello world</body></html>')
+app.get('/',(req, res) => {
+  res.status(200).send('<html><body>Hello World</body></html>')
 })
 
 // POST
-app.post('/item', (req, res) => {
+app.post('/item',(req, res) => {
 
   const newItem = Object.keys(ITEMS).length +1
   const newDate = new Date().toJSON().slice(0,10)
@@ -69,10 +68,10 @@ app.get('/items', (req, res) => {
 
 // DELETE 
 app.delete('item/:id', (req, res) => {
-  const id = req.params.id;
-  ITEMS = ITEMS.find((item) => item.id !==id);
-  res.send('item with id ${id} has been deleted')
-});
+  const id = parseFloat(req.params.id)
+  ITEMS = [...ITEMS.find((item) => item.id !=id)]
+  res.status(204).json({})
+})
 
 // Serve................................................
 app.listen(port, () => {

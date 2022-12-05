@@ -21,10 +21,10 @@
         margin: 4px;
         font-weight: 500;
       }
-      Submit {
+      .createItem {
         font-size: 15px;
-        color: #fff;
-        background: #222;
+        color: rgb(8, 8, 8);
+        background: rgb(228, 5, 5);
         padding: 6px 12px;
         border: none;
         margin-top: 8px;
@@ -41,7 +41,7 @@
   <div id="app">
 
     <h2>New Item</h2>
-    <form @submit.prevent="create_item" data:filed="user_id">
+    <form @submit.prevent="create_item">
       <span>UserName</span><br>
       <input
       v-model = "item.user_id"
@@ -68,7 +68,7 @@
       v-model = "item.image"
       name="image"
       type="text"
-      placeholder="image"
+      placeholder="text"
       /><br>
       <span>Keywords</span><br>
       <input
@@ -84,35 +84,34 @@
       placeholder="description"
       ></textarea
       /><br>
-      <button data-action="create_item" type="submit">Submit</button>
+      <button data-action="create_item">createItem</button>
     </form>
 
     <h2>Items</h2>
     <ul>
-       <li v-for="item in ITEMS">
+       <li v-for="item in items">
         <span data-field="id">{{item.id}}</span>
         <span data-field="user_id">{{item.user_id}}</span>
         <span data-field="lat">{{item.lat}}</span>
         <span data-field="lon">{{item.lon}}</span>
         <img src="item.image">
         <span data-field="keywords">{{item.keywords}}</span>
-        <span data-field="description">{{description.lon}}</span>
-				<button data-action="delete" @click="deleteItem(item.id)">Delete</button>
+        <span data-field="description">{{item.description}}</span>
+				<button data-action="delete" @click="deleteItem(item.id)">delete/button>
         </li>
       </ul>
   </div>
 
 <script type="module">
 // javascript here
-const { createApp } = Vue
+const {createApp} = Vue
 const DEFAULT_API = '/api/v1';  // default to current http(s)://currentHost:currentPort/api/v1'
 const urlParams = new URLSearchParams(window.location.search);
 const urlAPI = (urlParams.get('api') || DEFAULT_API).replace(/\/$/, '');  // Get api url (and remove trailing slash if present)
 
-createApp({
+createApp ({
   data() {
     return {
-      urlAPI,
       item: {
         id:'',
         user_id:'',
@@ -124,20 +123,22 @@ createApp({
         date_from:'',
         date_to:'',
       },
-      ITEMS:[]
+      items:[]
     }
   },
   created(){
     this.clearInput()
-    this.getItem()
+    this.getItems()
+  },
+  components: {
   },
   methods:{
-    getItem(){
-      fetch(`${urlAPI}/ITEMS`, {
+    getItems(){
+      fetch(`${urlAPI}/items`, {
         method: 'GET',
       })
       .then(response => response.json())
-      .then(json => this.ITEMS = json)// save the json we got back into the variable `ITEMS`
+      .then(json => this.items = json)// save the json we got back into the variable `ITEMS`
       .catch(err => console.error(err))
     },
     clearInput(){
@@ -154,13 +155,14 @@ createApp({
       fetch(`${urlAPI}/item`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data),
+        body: JSON.stringify(this.item),
     })
-    .then(response => response.json())
-        .then(json => console.log('createItems()', json))
+      .then(response => response.json())
+      .then(()=>this.clearInput())
+      .then(json => console.log('addItem()', json))
     .catch(err => console.error(err));
   },
-  deleteItem(item_id) {
+    deleteItem(item_id) {
     fetch(`${urlAPI}/item/${item_id}`, {
         method: 'DELETE',
     })
