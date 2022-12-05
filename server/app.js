@@ -1,13 +1,15 @@
 const express = require('express')
-const app = express()
-const port = 8000
+const app = express();
+const port = 8000;
 const ITEMS = require('./items');
 const cors = require('cors')
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
+
+
+/*app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))*/
 
 app.use(express.json());//Enable json
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
 app.use(cors({
 }));
 
@@ -45,9 +47,10 @@ app.post('/item',(req, res) => {
 
 // GET
 app.get('item/:id', (req, res) => {
-  const id = req.params.id;
-  const item = ITEMS.find((item) => item.id === id);
-  if (item) {
+  const {id} = req.params;
+  const {ITEMS} = req.body;
+  //const item = ITEMS.find((item) => item.id === id);
+  if (ITEMS) {
     res.json(item);
   } else{
     res.status(404).send('The item with the given ID was not found')
@@ -56,11 +59,10 @@ app.get('item/:id', (req, res) => {
 
 //Get Items 
 app.get('/items', (req, res) => {
-  const id = req.params.user_id;
   if (req.query.user_id) {
     res.status(200).json(
-      Object.values(ITEMS).filter(u => u.user_id == req.query.user_id))
-   return
+      Object.values(ITEMS).filter(i => i.user_id == req.query.user_id))
+   return;
     }
     res.status(200).json(
       Object.values(ITEMS))
