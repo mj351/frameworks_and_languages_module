@@ -1,18 +1,17 @@
 const express = require('express')
-const app = express();
-const port = 8000;
-const ITEMS = require('./items');
+const app = express()
+const port = 8000
+const ITEMS = require('./items')
+
+// Init Express ----------------------
+app.use(express.json());// Enable json input from incoming requests. This is accessible from `req.body`
+
+// CORS - https://expressjs.com/en/resources/middleware/cors.html
 const cors = require('cors')
-//const bodyParser = require('body-parser');
-
-
-/*app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))*/
-
-app.use(express.json());//Enable json
 app.use(cors({
-}));
+}))
 
+// Routes ----------------------
 app.get('/',(req, res) => {
   res.status(200).send('<html><body>Hello World</body></html>')
 })
@@ -45,18 +44,17 @@ app.post('/item',(req, res) => {
   }
 })
 
-// GET
+// GET item/id
 app.get('item/:id', (req, res) => {
-  const {id} = req.params;
-  const {ITEMS} = req.body;
-  //const item = ITEMS.find((item) => item.id === id);
-  if (ITEMS) {
-    res.json(item);
-  } else{
+  const id = parseFloat(req.params.id)
+  ITEMS = [...ITEMS.filter((item)=>item.id != id)]
+  res.status(204).json({})
+  
+  if (!ITEMS) {
     res.status(404).send('The item with the given ID was not found')
   }
 })
-
+ 
 //Get Items 
 app.get('/items', (req, res) => {
   if (req.query.user_id) {
@@ -75,7 +73,19 @@ app.delete('item/:id', (req, res) => {
   res.status(204).json({})
 })
 
-// Serve................................................
+/*/ https://expressjs.com/en/guide/error-handling.html
+function logErrors (err, req, res, next) {
+  console.error(err.stack)
+  next(err)
+}
+app.use(logErrors)
+app.use(function(req, res, next){
+  console.log('no route', req.originalUrl);
+  res.status(404).type('txt').send('Not found');
+  next()
+})*/
+
+// Serve ----------------------
 app.listen(port, () => {
   console.log(`Example app listening on port 8000 ${port}`)
 });
