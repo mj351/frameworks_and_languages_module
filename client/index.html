@@ -21,7 +21,7 @@
         margin: 4px;
         font-weight: 500;
       }
-      .submit {
+      button {
         font-size: 15px;
         color: rgb(8, 8, 8);
         background: rgb(228, 5, 5);
@@ -94,7 +94,9 @@
         <p>User_id: {{ item.user_id }}</p>
         <p>Latitude: {{ item.lat }}</p>
         <p>Longitude: {{ item.lon }}</p>
-        <img src="item.image">
+        <img
+        :class="image"
+        v-bind:src="item.image" alt="" />
         <p>date_from: {{ item.date_from }}</p>
         <p>keywords: {{ item.keywords }}</p>
         <p>description: {{ item.description }}</p>
