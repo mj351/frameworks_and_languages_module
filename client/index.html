@@ -21,7 +21,7 @@
         margin: 4px;
         font-weight: 500;
       }
-      .createItem {
+      .submit {
         font-size: 15px;
         color: rgb(8, 8, 8);
         background: rgb(228, 5, 5);
@@ -84,20 +84,21 @@
       placeholder="description"
       ></textarea
       /><br>
-      <button data-action="create_item">createItem</button>
+      <button data-action="create_item" type="submit">Submit</button>
     </form>
 
     <h2>Items</h2>
     <ul>
        <li v-for="item in items">
         <span data-field="id">{{item.id}}</span>
-        <span data-field="user_id">{{item.user_id}}</span>
-        <span data-field="lat">{{item.lat}}</span>
-        <span data-field="lon">{{item.lon}}</span>
+        <p>User_id: {{ item.user_id }}</p>
+        <p>Latitude: {{ item.lat }}</p>
+        <p>Longitude: {{ item.lon }}</p>
         <img src="item.image">
-        <span data-field="keywords">{{item.keywords}}</span>
-        <span data-field="description">{{item.description}}</span>
-				<button data-action="delete" @click="deleteItem(item.id)">delete/button>
+        <p>date_from: {{ item.date_from }}</p>
+        <p>keywords: {{ item.keywords }}</p>
+        <p>description: {{ item.description }}</p>
+				<button data-action="delete" @click="delete_item(item.id)">delete/button>
         </li>
       </ul>
   </div>
@@ -127,21 +128,11 @@ createApp ({
     }
   },
   created(){
-    this.clearInput()
-    this.getItems()
-  },
-  components: {
+    this.clear_item()
+    this.get_items()
   },
   methods:{
-    getItems(){
-      fetch(`${urlAPI}/items`, {
-        method: 'GET',
-      })
-      .then(response => response.json())
-      .then(json => this.items = json)// save the json we got back into the variable `ITEMS`
-      .catch(err => console.error(err))
-    },
-    clearInput(){
+    clear_item(){
       this.item = {...this.item, ...{
         user_id:'',
         keywords:'',
@@ -151,22 +142,32 @@ createApp ({
         lon:'',
       }}
     },
-    createItem(){
+    get_items(){
+      fetch(`${urlAPI}/items`, {
+        method: 'GET',
+      })
+      .then(response => response.json())
+      .then(data => this.items = data)// save the data we got back into the variable `items`
+      .catch(err => console.error(err))
+    },
+    create_item(){
       fetch(`${urlAPI}/item`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(this.item),
     })
       .then(response => response.json())
-      .then(()=>this.clearInput())
-      .then(json => console.log('addItem()', json))
+      .then(json => console.log('createItem()', json))
+      .then(()=>this.clear_item())
+      .then(this.get_items)
     .catch(err => console.error(err));
   },
-    deleteItem(item_id) {
+  delete_item(item_id) {
     fetch(`${urlAPI}/item/${item_id}`, {
         method: 'DELETE',
     })
-    .then(json => console.log('deleteItem()', json))
+    .then(json => console.log('delete_item()', json))
+    .then(this.get_items)
     .catch(err => console.error(err));
   }
   }
