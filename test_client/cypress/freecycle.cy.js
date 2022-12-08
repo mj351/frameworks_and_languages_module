@@ -76,7 +76,7 @@ describe('FreeCycle', () => {
 			keywords: 'test',
 		})
 		cy.get(`[data-action="create_item"]`).filter(':visible').click()
-		cy.get(`ul`).filter(':visible').contains('this should be visible').should('exist')
+		cy.get(`ul`).filter(':visible').contains('this should be visible').should('exist') //tomorrow task 09/12/22 
 	})
 
 	it('Create and Delete Item', () => {

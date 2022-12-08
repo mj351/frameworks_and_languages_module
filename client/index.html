@@ -21,7 +21,7 @@
         margin: 4px;
         font-weight: 500;
       }
-      button {
+      .submit {
         font-size: 15px;
         color: rgb(8, 8, 8);
         background: rgb(228, 5, 5);
@@ -41,6 +41,7 @@
   <div id="app">
 
     <h2>New Item</h2>
+
     <form @submit.prevent="create_item">
       <span>UserName</span><br>
       <input
@@ -67,8 +68,8 @@
       <input
       v-model = "item.image"
       name="image"
-      type="text"
-      placeholder="text"
+      type="url"
+      placeholder="url"
       /><br>
       <span>Keywords</span><br>
       <input
@@ -84,25 +85,24 @@
       placeholder="description"
       ></textarea
       /><br>
-      <button data-action="create_item" type="submit">Submit</button>
+      <button data-action="create_item">Submit</button>
     </form>
 
     <h2>Items</h2>
     <ul>
        <li v-for="item in items">
         <span data-field="id">{{item.id}}</span>
-        <p>User_id: {{ item.user_id }}</p>
-        <p>Latitude: {{ item.lat }}</p>
-        <p>Longitude: {{ item.lon }}</p>
-        <img
-        :class="image"
-        v-bind:src="item.image" alt="" />
-        <p>date_from: {{ item.date_from }}</p>
-        <p>keywords: {{ item.keywords }}</p>
-        <p>description: {{ item.description }}</p>
-				<button data-action="delete" @click="delete_item(item.id)">delete/button>
+        <span data-field="user_id">{{ item.user_id }}</span>
+        <span data-field="Latitude">{{ item.lat }}</span>
+        <span data-field="Longitude">{{ item.lon }}</span>
+        <img :src="item.image" alt="image">
+        <span data-field="Date">{{item.date_from}}</span>
+        <span data-field="keywords">{{item.keywords}}</span>
+        <span data-field="description">{{item.description}}</span>
+				<button data-action="delete" @click="delete_item(item.id)">Delete</button>
         </li>
       </ul>
+      
   </div>
 
 <script type="module">
@@ -110,7 +110,7 @@
 const {createApp} = Vue
 const DEFAULT_API = '/api/v1';  // default to current http(s)://currentHost:currentPort/api/v1'
 const urlParams = new URLSearchParams(window.location.search);
-const urlAPI = (urlParams.get('api') || DEFAULT_API).replace(/\/$/, '');  // Get api url (and remove trailing slash if present)
+const urlAPI = (urlParams.get('api') || DEFAULT_API).replace(/\/$/, '');// Get api url (and remove trailing slash if present)
 
 createApp ({
   data() {
@@ -126,7 +126,7 @@ createApp ({
         date_from:'',
         date_to:'',
       },
-      items:[]
+      items:[],
     }
   },
   created(){
@@ -134,7 +134,15 @@ createApp ({
     this.get_items()
   },
   methods:{
-    clear_item(){
+    get_items() {
+      fetch(`${urlAPI}/items`, {
+        method: 'GET',
+      })
+      .then(response => response.json())
+      .then(json => this.items = json)// save the json we got back into the variable `items`
+      .catch(err => console.error(err))
+    },
+    clear_item() {
       this.item = {...this.item, ...{
         user_id:'',
         keywords:'',
@@ -144,35 +152,27 @@ createApp ({
         lon:'',
       }}
     },
-    get_items(){
-      fetch(`${urlAPI}/items`, {
-        method: 'GET',
-      })
-      .then(response => response.json())
-      .then(data => this.items = data)// save the data we got back into the variable `items`
-      .catch(err => console.error(err))
-    },
-    create_item(){
+    create_item() {
       fetch(`${urlAPI}/item`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(this.item),
     })
       .then(response => response.json())
-      .then(json => console.log('createItem()', json))
-      .then(()=>this.clear_item())
+      .then(json => console.log('create_item()', json))
+      .then(this.clear_item)
       .then(this.get_items)
     .catch(err => console.error(err));
   },
-  delete_item(item_id) {
-    fetch(`${urlAPI}/item/${item_id}`, {
+  deleteItem(id) {
+    fetch(`${urlAPI}/item/${id}`, {
         method: 'DELETE',
     })
     .then(json => console.log('delete_item()', json))
     .then(this.get_items)
-    .catch(err => console.error(err));
+      .catch(err => console.error(err));
   }
-  }
+  },
 }).mount('#app')
 
 </script>
