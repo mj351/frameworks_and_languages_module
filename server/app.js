@@ -3,29 +3,22 @@ const app = express()
 const port = 8000
 const items = require('./items')
 const cors = require('cors')
+const bodyParser = require('body-parser')
 
 // Init Express ----------------------
-app.use(express.json());// Enable json input from incoming requests. This is accessible from `req.body`
-app.use(express.urlencoded())
+app.// To parse json data
+use(express.json());
+app.// To parse URL encoded data
+use(express.urlencoded({ extended: false }));
+
 //CORS - https://expressjs.com/en/resources/middleware/cors.html
 app.use(cors({
 }))
 
-
 //Routes ----------------------
-app.get('/',(req, res) => {
+app.//GET method route
+get('/',(req, res) => {
   res.status(200).send('<html><body>Hello World</body></html>')
-})
-
-//GET itemId req
-app.get('/item/:id', (req, res) => {
-  itemId = parseInt(req.params.id)
-  if(items.hasOwnProperty(itemId)){
-    res.json(items[itemId])
-  }
-  else{
-    res.status(404).send("The item with the given ID was not found")
-  }
 })
 
 //POST Item req
@@ -52,12 +45,23 @@ app.post('/item',(req, res) => {
     res.status(201).json(items[newItem])
   } 
   else {
-    res.status(405).json('The item with the given ID was not found')
+    res.status(405).json('The item with the given Id was not found')
+  }
+})
+
+//GET itemId req
+app.get('/item/:id', (req, res) => {
+  itemId = parseFloat(req.params.id)
+  if(items.hasOwnProperty(itemId)){
+    res.json(items[itemId])
+  }
+  else{
+    res.status(404).send("The item with the given Id was not found")
   }
 })
  
-//Get items req
-app.get('/items', (req, res) => {
+//GET items req
+app.get('/items/', (req, res) => {
   if (req.query.user_id) {
     res.status(200).json(
       Object.values(items).filter(i => i.user_id == req.query.user_id))
@@ -67,11 +71,16 @@ app.get('/items', (req, res) => {
       Object.values(items))
 })
 
-// DELETE 
-app.delete('item/:id', (req, res) => {
-  const id = parseFloat(req.params.id)
-  items = [...items.find((item) => item.id !=id)]
-  res.status(204).json({})
+// DELETE item by ID req
+app.delete('/item/:id', (req, res) => {
+  itemId = parseFloat(req.params.id)
+  if(items.hasOwnProperty(itemId)){
+    delete items[itemId]
+    res.status(204).send("")
+  }
+  else{
+    res.status(404).send("The item with the given Id was not found")
+  }
 })
 
 // Serve ----------------------

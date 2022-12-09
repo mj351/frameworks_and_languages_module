@@ -1,5 +1,5 @@
 
-let items = {
+items = {
     0: {
         'id': 3,
         'user_id': "1234",
