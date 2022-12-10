@@ -5,19 +5,20 @@ const items = require('./items')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
-// Init Express ----------------------
-app.// To parse json data
-use(express.json());
-app.// To parse URL encoded data
-use(express.urlencoded({ extended: false }));
+// Init Express ---------------------- 
+
+// To parse json data
+app.use(express.json());
+// To parse URL encoded data
+app.use(express.urlencoded({ extended: false }));
 
 //CORS - https://expressjs.com/en/resources/middleware/cors.html
 app.use(cors({
 }))
 
 //Routes ----------------------
-app.//GET method route
-get('/',(req, res) => {
+//GET method route
+app.get('/',(req, res) => {
   res.status(200).send('<html><body>Hello World</body></html>')
 })
 
