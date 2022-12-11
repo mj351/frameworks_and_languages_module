@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 
 // To parse json data
 app.use(express.json());
+
 // To parse URL encoded data
 app.use(express.urlencoded({ extended: false }));
 
@@ -16,7 +17,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors({
 }))
 
-//Routes ----------------------
+//Routes ----------------------------------------------------------------------------------------
+
 //GET method route
 app.get('/',(req, res) => {
   res.status(200).send('<html><body>Hello World</body></html>')
@@ -46,7 +48,7 @@ app.post('/item',(req, res) => {
     res.status(201).json(items[newItem])
   } 
   else {
-    res.status(405).json('The item with the given Id was not found')
+    res.status(405).json('The item was not found')
   }
 })
 
@@ -84,7 +86,7 @@ app.delete('/item/:id', (req, res) => {
   }
 })
 
-// Serve ----------------------
+// Serve -----------https://stackoverflow.com/questions/4840879/nodejs-how-to-get-the-servers-port
 app.listen(port, () => {
   console.log(`Example app listening on port 8000 ${port}`)
 });
