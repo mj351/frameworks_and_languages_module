@@ -17,23 +17,28 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors({
 }))
 
-//Routes ----------------------------------------------------------------------------------------
+//Routes -----------------------------------------------------
 
 //GET method route
 app.get('/',(req, res) => {
   res.status(200).send('<html><body>Hello World</body></html>')
 })
 
-//POST Item req
+//POST Item request
 app.post('/item',(req, res) => {
-
+  // Create a new item with a unique ID
   const newItem = Object.keys(items).length +1
   const newDate = new Date().toJSON().slice(0,10)
   
+  // Check if the new item ID is already used
   if(items.hasOwnProperty(newItem)){
     newItem = newItem + 1
   }
+
+  // Check if all required fields are present in the request
   if(req.body.user_id && req.body.keywords && req.body.description && req.body.lat && req.body.lon !==""){
+
+    // If all required fields are present, create a new item
     items[newItem] = {
       id:newItem,
       user_id:req.body.user_id,
@@ -45,10 +50,13 @@ app.post('/item',(req, res) => {
       date_from: newDate,
       date_to: newDate
     }
+
+    // Return the newly created item
     res.status(201).json(items[newItem])
   } 
   else {
-    res.status(405).json('The item was not found')
+    // If any required fields are missing, return an error
+    res.status(405).json('error')
   }
 })
 
@@ -82,7 +90,7 @@ app.delete('/item/:id', (req, res) => {
     res.status(204).send("")
   }
   else{
-    res.status(404).send("The item with the given Id was not found")
+    res.status(404).send("error")
   }
 })
 
