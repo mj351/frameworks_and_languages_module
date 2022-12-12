@@ -101,3 +101,9 @@ app.listen(port, () => {
 
 // Docker container exit handler - https://github.com/nodejs/node/issues/4182
 process.on('SIGINT', function() {process.exit()})
+
+/*References
+github.com/calaldees/frameworks_and_languages_module
+https://github.com/NathanSmallcalder/frameworks_and_languages_module/blob/main/server/server.js
+https://github.com/Reem-313/frameworks_and_languages_module/blob/main/server/server.js
+*/
