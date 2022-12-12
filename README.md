@@ -38,7 +38,7 @@ Testing
 
 Navigate to the server and Run the following command.
 
-Cd 
+npm run start 
 
 open a new terminal and Run the following command.
 
