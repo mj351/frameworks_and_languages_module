@@ -3,11 +3,33 @@ Technical Report
 
 (intro)
 
+A framework is a collection of tools and libraries that give a framework for creating software applications.
 
 Server Framework Features
 -------------------------
 
-### (name of Feature 1)
+### ( Routing)
+
+The use of routing is a technique for selecting how an application should respond to HTTP request method GET, POST and DELETE from a client. 
+
+We may use the Router method that provided by Express.js to simplify the request process, when we have routes that are the same such as:
+
+app.get('/item',(req, res) => {
+})
+
+& 
+
+app.post('/item',(req, res) => {
+})
+
+We can combine both of them with a route method as the following:
+
+app.route('/item')
+ .get( (req, res) => {
+})
+ .post( (req, res) => {
+})
+
 
 (Technical description of the feature - 40ish words - 1 mark)
 (A code block snippet example demonstrating the feature - 1 mark)
@@ -15,7 +37,7 @@ Server Framework Features
 (Provide reference urls to your sources of information about the feature - required)
 
 
-### (name of Feature 2)
+### (Middleware)
 
 (Technical description of the feature - 40ish words - 1 mark)
 (A code block snippet example demonstrating the feature - 1 mark)
@@ -23,7 +45,7 @@ Server Framework Features
 (Provide reference urls to your sources of information about the feature - required)
 
 
-### (name of Feature 3)
+### (Error Handling)
 
 (Technical description of the feature - 40ish words - 1 mark)
 (A code block snippet example demonstrating the feature - 1 mark)
