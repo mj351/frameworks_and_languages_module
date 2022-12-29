@@ -20,17 +20,28 @@ app.get('/item',(req, res) => {
 
 app.post('/item',(req, res) => {
 })
+
+app.delete('/item',(req, res) => {
+})
 ---
+
 
 We can combine both of them with a route method as the following:
 
 ---javascript
 app.route('/item')
- .get( (req, res) => {
+.get( (req, res) => {
+  res.send('Get a random item')
 })
- .post( (req, res) => {
+.post( (req, res) => {
+  res.send('Add a item')
+})
+.delete( (req, res) => {
+  res.send('Delete a random item')
 })
 ---
+
+https://expressjs.com/en/guide/routing.html
 
 (Technical description of the feature - 40ish words - 1 mark)
 (A code block snippet example demonstrating the feature - 1 mark)
