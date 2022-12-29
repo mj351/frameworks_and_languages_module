@@ -14,22 +14,23 @@ The use of routing is a technique for selecting how an application should respon
 
 We may use the Router method that provided by Express.js to simplify the request process, when we have routes that are the same such as:
 
+---javascript
 app.get('/item',(req, res) => {
 })
 
-& 
-
 app.post('/item',(req, res) => {
 })
+---
 
 We can combine both of them with a route method as the following:
 
+---javascript
 app.route('/item')
  .get( (req, res) => {
 })
  .post( (req, res) => {
 })
-
+---
 
 (Technical description of the feature - 40ish words - 1 mark)
 (A code block snippet example demonstrating the feature - 1 mark)
