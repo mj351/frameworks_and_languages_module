@@ -10,21 +10,21 @@ Server Framework Features
 
 ### ( Routing)
 
-The use of routing is a technique for selecting how an application should respond to HTTP request method such as GET, POST and DELETE from a client. 
+The use of routing is a technique for selecting how an application should responding to HTTP request method such as GET, POST and DELETE from a client. 
 We may use the Router method that provided by Express.js to simplify the request process, when we have routes that are the same such as:
 
----javascript
+```javascript
 app.get('/item',(req, res) => {
 })
 app.post('/item',(req, res) => {
 });
 app.delete('/item',(req, res) => {
 })
----
+```
 
 We can combine both of them with a route method as the following:
 
----javascript
+```javascript
 app.route('/item')
 .get( (req, res) => {
   res.send('Get a random item')
@@ -35,8 +35,12 @@ app.route('/item')
 .delete( (req, res) => {
   res.send('Delete a random item')
 })
----
-https://expressjs.com/en/guide/routing.html
+```
+
+[Link]
+(https://expressjs.com/en/guide/routing.html)
+
+
 (Technical description of the feature - 40ish words - 1 mark)
 (A code block snippet example demonstrating the feature - 1 mark)
 (Explain the problem-this-is-solving/why/benefits/problems - 40ish words - 1 mark)
@@ -45,8 +49,9 @@ https://expressjs.com/en/guide/routing.html
 
 ### (Middleware)
 
-Middleware is a function that is executed before or after a request is handled. It can be used to perform tasks such as authentication, validation, logging, or modifying the request or response object.
-(Technical description of the feature - 40ish words - 1 mark)
+Middleware is a function that is executed before or after a request is handled. It can be used to perform tasks such as authentication, validation, logging, or modifying the request or response object. For example, When a website is accessed, middleware acts as an unique kind of assist. It can modify the website's appearance or ensure that only specific individuals can access it.
+
+
 (A code block snippet example demonstrating the feature - 1 mark)
 (Explain the problem-this-is-solving/why/benefits/problems - 40ish words - 1 mark)
 (Provide reference urls to your sources of information about the feature - required)
