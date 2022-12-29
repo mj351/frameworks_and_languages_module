@@ -12,26 +12,29 @@ Server Framework Features
 
 The use of routing is a technique for selecting how an application should respond to HTTP request method such as GET, POST and DELETE from a client. 
 We may use the Router method that provided by Express.js to simplify the request process, when we have routes that are the same such as:
+
 ---javascript
 app.get('/item',(req, res) => {
-});
+})
 app.post('/item',(req, res) => {
 });
 app.delete('/item',(req, res) => {
-});
+})
 ---
+
 We can combine both of them with a route method as the following:
+
 ---javascript
 app.route('/item')
 .get( (req, res) => {
   res.send('Get a random item')
-});
+})
 .post( (req, res) => {
   res.send('Add a item')
 });
 .delete( (req, res) => {
   res.send('Delete a random item')
-});
+})
 ---
 https://expressjs.com/en/guide/routing.html
 (Technical description of the feature - 40ish words - 1 mark)
@@ -129,7 +132,7 @@ Critique of Server/Client prototype
 (A code snippet example demonstrating the feature - 1 mark)
 (Explain why this pattern is problematic - 40ish words 1 mark)
 
---- 
+---
 def find_route_func(request, routes):
 ---
 
