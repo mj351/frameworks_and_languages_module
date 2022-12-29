@@ -16,13 +16,13 @@ We may use the Router method that provided by Express.js to simplify the request
 
 ---javascript
 app.get('/item',(req, res) => {
-})
+});
 
 app.post('/item',(req, res) => {
-})
+});
 
 app.delete('/item',(req, res) => {
-})
+});
 ---
 
 
@@ -32,13 +32,13 @@ We can combine both of them with a route method as the following:
 app.route('/item')
 .get( (req, res) => {
   res.send('Get a random item')
-})
+});
 .post( (req, res) => {
   res.send('Add a item')
-})
+});
 .delete( (req, res) => {
   res.send('Delete a random item')
-})
+});
 ---
 
 https://expressjs.com/en/guide/routing.html
