@@ -39,7 +39,7 @@ app.route('/item')
 })
 ```
 
->[.Routing](https://expressjs.com/en/guide/routing.html)
+>[. Routing](https://expressjs.com/en/guide/routing.html)
 
 ### (Middleware)
 
