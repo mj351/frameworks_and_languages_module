@@ -3,7 +3,6 @@ const app = express()
 const port = 8000
 const items = require('./items')
 const cors = require('cors')
-const bodyParser = require('body-parser')
 
 // Init Express ---------------------- 
 
