@@ -203,8 +203,6 @@ RESPONSE_CODES = {
 ```
 This structure uses a hard-coded dictionary that limits the addition or modification of answer codes, making it unsuitable. The entire dictionary would need to be altered to create a new response code or update an existing one, which could result in mistakes or inconsistencies in the code. It also limits flexibility in managing different replies, making it challenging to react to changing needs.
 
-[Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
-
 Future Technology Suggestions
 -----------------------------
 
